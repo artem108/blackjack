@@ -35,3 +35,7 @@ export interface GameInterface {
     hitDealerCard: () => void;
     playerPlayed: () => void;
 }
+
+export interface GamesList {
+    [id: string]: GameInterface;
+}

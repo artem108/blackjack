@@ -24,21 +24,21 @@ const Hands: FC<HandsProps> = ({
                     <div className="cardContainer cardContent hiddenBg"></div>
                 }
             </div>
-            {
-                playerHand && !gameOver &&
-                 <div className="buttons">
-                    <Button callback={hitCard} title={'HIT'} className={"hit"} />
-                    <Button callback={stand} title={'STAND'} className={"stand"} />
-                </div>
-            }
-            {
-                playerHand && gameOver &&
-                <Button
-                    callback={startGame}
-                    title={'Start new game'}
-                    className={"hit"}
-                />
-            }
+            <div className="buttons">
+                {
+                    playerHand && !gameOver && <>
+                        <Button callback={hitCard} title={'HIT'} className={"hit"} />
+                        <Button callback={stand} title={'STAND'} className={"stand"} />
+                </>}
+                {
+                    playerHand && gameOver &&
+                    <Button
+                        callback={startGame}
+                        title={'Start new game'}
+                        className={"hit"}
+                    />
+                }
+             </div>
         </div>
     );
 }

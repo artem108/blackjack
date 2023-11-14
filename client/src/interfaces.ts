@@ -32,11 +32,13 @@ export interface GameInfoProps {
     gameOver: boolean;
     playerWin: boolean;
     playerScore: number;
+    dealerScore: number;
 }
 
 export interface Game {
     gameOver: boolean;
     playerWin: boolean;
+    id: number;
     player: {
         cards: Card[]
         totalPoints: number;

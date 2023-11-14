@@ -19,7 +19,7 @@ const GameContainer = () => {
   };
 
   const hitCard = async () => {
-    const { data } = await hitPlayerCard() as GameResults;
+    const { data } = await hitPlayerCard(game.id) as GameResults;
 
     setGame((prevState: any) => ({
       ...prevState, 
@@ -28,7 +28,7 @@ const GameContainer = () => {
   };
 
   const stand = async () => {
-    const { data } = await playerStand() as GameResults;
+    const { data } = await playerStand(game.id) as GameResults;
     
     setGame((prevState: any) => ({
       ...prevState, 
@@ -57,6 +57,7 @@ const GameContainer = () => {
                 gameOver={gameOver}
                 playerWin={playerWin}
                 playerScore={player.totalPoints}
+                dealerScore={dealer.totalPoints}
             />
             <Hands 
               playerHand={true} 
@@ -66,7 +67,7 @@ const GameContainer = () => {
               stand={stand} 
               startGame={startGame}
             />
-          </>
+        </>
       }
     </div>
   );

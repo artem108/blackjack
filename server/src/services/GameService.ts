@@ -10,10 +10,12 @@ class GameService implements GameInterface {
     cardsDeck: CardDeskInterface;
     playerWin: boolean;
     gameOver: boolean;
+    id: string;
 
-    constructor(cards: CardInterface[]) {
+    constructor(cards: CardInterface[], id: string) {
         this.playerWin = false;
         this.gameOver = false;
+        this.id = id;
         this.cardsDeck = new CardDeckService(cards);
         this.playerHand = new HandsService([this.cardsDeck.getCard(), this.cardsDeck.getCard()]);
         this.dealerHand = new HandsService([this.cardsDeck.getCard()]);
@@ -24,7 +26,7 @@ class GameService implements GameInterface {
         this.playerHand.hitCard(card);
 
         if (this.playerHand.totalPoints >= WIN_SCORE) {
-            this.playerPlayed();
+            this.calculateResults();
         }
     }
 
@@ -42,7 +44,8 @@ class GameService implements GameInterface {
             playerWin: this.playerWin,
             gameOver: this.gameOver,
             player: this.playerHand,
-            dealer: this.dealerHand
+            dealer: this.dealerHand,
+            id: this.id
         }
     }
 

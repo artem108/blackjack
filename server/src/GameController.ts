@@ -1,44 +1,71 @@
 import { Request, Response } from 'express';
+import { v1 as uuidv1 } from 'uuid';
 import GameService from './services/GameService';
-import { GameInterface } from './interfaces'
+import { GamesList } from './interfaces';
 import { readFile } from 'fs/promises';
 
 class GameController {
-    game: GameInterface;
+    gamesList: GamesList;
 
     constructor() {
-        this.game = {} as GameInterface;
+        this.gamesList = {} as GamesList;
+    }
+
+    async getCards() {
+        const result = await readFile(`${__dirname}/cards.json`, "utf8");
+        return JSON.parse(result);
     }
 
     async createNewGame(req: Request, res: Response) {
         try {
-            const result = await readFile(`${__dirname}/cards.json`, "utf8")
-            const { cards } = JSON.parse(result);
+            const { cards } = await this.getCards();
+            const id = uuidv1();
+            const game = new GameService(cards, id);
 
-            this.game = new GameService(cards);
+            this.gamesList[id] = game;
 
-            res.json(this.game.getResults());
+            res.json(game.getResults());
         } catch (error) {
             res.status(500).json(error);
         }
     }
 
     hitPlayerCard(req: Request, res: Response) {
-        try {
-            this.game.hitPlayerCard();
+        const game = this.gamesList[req.params.id];
 
-            res.json(this.game.getResults());
+        if (!game) {
+            res.status(500).json({ massage: 'Sorry game is over:(' });
+        }
+
+        try {
+            game.hitPlayerCard();
+
+            if (game.gameOver) {
+                delete this.gamesList[req.params.id];
+            }
+
+            res.json(game.getResults());
         } catch (error) {
             res.status(500).json(error);
         }
     }
 
     playerStand(req: Request, res: Response) {
-        try {
-            this.game.playerPlayed();
-            this.game.calculateResults();
+        const game = this.gamesList[req.params.id];
 
-            res.json(this.game.getResults());
+        if (!game) {
+            res.status(500).json({ massage: 'Sorry game is over:(' });
+        }
+
+        try {
+            game.playerPlayed();
+            game.calculateResults();
+
+            if (game.gameOver) {
+                delete this.gamesList[req.params.id];
+            }
+
+            res.json(game.getResults());
         } catch (error) {
             res.status(500).json(error);
         }

@@ -10,18 +10,18 @@ export const getNewGame = async (): Promise<GameResults | void> => {
     }
 };
 
-export const playerStand = async (): Promise<GameResults | void> => {
+export const playerStand = async (id: number): Promise<GameResults | void> => {
     try {
-        const response = await axios.get('/game/player-stand');
+        const response = await axios.get(`/game/player-stand/${id}`);
         return response;
     } catch (error) {
         console.error(error);        
     }
 };
 
-export const hitPlayerCard = async (): Promise<GameResults | void> => {
+export const hitPlayerCard = async (id: number): Promise<GameResults | void> => {
     try {
-        const response = await axios.get('/game/hit-card');
+        const response = await axios.get(`/game/hit-card/${id}`);
         return response;
     } catch (error) {
         console.error(error);        
