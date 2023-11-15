@@ -38,7 +38,7 @@ export interface GameInfoProps {
 export interface Game {
     gameOver: boolean;
     playerWin: boolean;
-    id: number;
+    id: string;
     player: {
         cards: Card[]
         totalPoints: number;
